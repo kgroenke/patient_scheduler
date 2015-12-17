@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html ng-app='myApp'>
+<head>
+
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="../materialize/css/materialize.css"  media="screen,projection"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+
+  <script type = "text/javascript">
+  var myApp = angular.module('myApp', ['ui.router'])
+
+
+  myApp.config(function($stateProvider){
+    $stateProvider
+    .state('home', {
+      url: '',
+      templateUrl:'/partials/login.html',
+      controller: 'appointmentsController'
+    })
+    .state('appointments', {
+      url: '/appointments',
+      templateUrl: '/partials/all_appointments.html',
+      controller: 'appointmentsController'
+    })
+    .state('new_appointment', {
+      url: '/new',
+      templateUrl: 'partials/new_appointment.html',
+      controller: 'newAppointmentsController'
+    })
+  })
+  //appointmentsFactory
+  myApp.factory('appointmentsFactory', function($http){
+    factory = {}
+
+    var userName = ''
+
+    factory.setUserName = function(name, callback){
+      var error_message = ""
+
+      if (!name){
+        error_message = "Patient name must be at least 2 characters"
+        callback(error_message)
+      }
+      else {
+        var info = {patient_name: name}
+        $http.post('/patient', info).success(function(output){
+          if(output == "error"){
+            error_message = "Patient name must be at least 2 characters"
+            callback(error_message)
+          }
+          else {
+            userName = name
+            callback("No errors")
+          }
+        })
+      }
+    }
+    factory.getUserName = function(callback){
+
+      callback(userName)
+    }
+
+    factory.getAppointments = function(callback){
+      $http.get('/appointments').success(function(output){
+        callback(output)
+      })
+    }
+    factory.cancelAppointment = function(id, callback){
+      info = {}
+      info.id = id
+      $http.post('/cancel', info).success(function(){
+        callback()
+      })
+    }
+    factory.logout = function(callback){
+      userName = ''
+      callback()
+    }
+
+    return factory
+  })
+  //new appointment factory
+  myApp.factory('newAppointmentsFactory', function($http){
+    factory = {}
+
+    factory.newAppointment = function(info, name, callback){
+      if(info){
+        info.name = name
+      }
+      $http.post('/appointment/add', info).success(function(output){
+        if(output.errors){
+          if(output.errors.complaint){
+            console.log("output.errors", output.errors.complaint.message)
+            callback(output.errors.complaint.message)
+          }
+          else if(output.errors.name){
+            console.log("output.errors", output.errors.name.message)
+            callback(output.errors.name.message)
+          }
+          else{
+            callback(output)
+          }
+        }
+        else if (output) {
+          callback(output)
+        }
+        else{
+          callback()
+        }
+      })
+    }
+    return factory
+  })
+  //all appointments controller
+  myApp.controller('appointmentsController', function($scope, $state, appointmentsFactory){
+    appointmentsFactory.getUserName(function(info){
+      $scope.user = info
+    })
+    appointmentsFactory.getAppointments(function(info){
+      $scope.appointments = info
+    })
+    $scope.submitName = function(name) {
+      appointmentsFactory.setUserName(name, function(message){
+        if (message == "No errors"){
+          $state.transitionTo('appointments')
+        }
+        else {
+          $scope.error_message = message
+        }
+      })
+    }
+    $scope.makeAppointment = function(){
+      $state.transitionTo('new_appointment')
+    }
+    $scope.cancelAppointment = function(id){
+      appointmentsFactory.cancelAppointment(id, function(){
+        appointmentsFactory.getAppointments(function(info){
+          $scope.appointments = info
+        })
+      })
+    }
+    $scope.logout = function(){
+      appointmentsFactory.logout(function(){
+        $state.transitionTo('home')
+      })
+    }
+  })
+  //new appointment controller
+  myApp.controller('newAppointmentsController', function($scope, $state, newAppointmentsFactory, appointmentsFactory){
+    var date = new Date();
+    $scope.date = date.toISOString();
+    appointmentsFactory.getUserName(function(info){
+      if(!info){
+        $state.transitionTo('home')
+      }
+      else{
+          $scope.user = info
+      }
+    })
+    $scope.back = function(){
+      $state.transitionTo('appointments');
+    }
+    $scope.logout = function(){
+      appointmentsFactory.logout(function(){
+        $state.transitionTo('home')
+      })
+    }
+    $scope.newAppointment = function(){
+      $scope.errors_array = []
+      $scope.mongoose_errors = ""
+
+      newAppointmentsFactory.newAppointment($scope.appointment, $scope.user, function(errors){
+        if (typeof errors == "string"){
+          $scope.mongoose_errors = errors
+        }
+        else if(errors[0]){
+          $scope.errors_array = errors;
+        }
+        else{
+          console.log("errors in controller not []", errors)
+          $state.transitionTo('appointments')
+        }
+        $scope.appointment = {}
+      })
+    }
+  })
+
+  </script>
+</head>
+<body>
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+  <div ui-view>
+  </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+table {
+  width: 95%;
+  margin: auto;
+}
+
+#search_bar {
+  width: 50%;
+}
+
+#banner {
+  background-image: url("../images/appointment_banner.jpeg");
+  background-size: 100%;
+  color: white;
+  max-width: 100%;
+  /*height: auto\9;*/
+  width: auto\9; /* ie8 */
+  height: 250px;
+  /*min-height: 150px;*/
+  /*max-height: 500px;*/
+  /*max-height: 100%;*/
+
+}
+/*img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}*/
+
+
+h1 {
+  margin: 0px;
+  vertical-align: middle;
+}

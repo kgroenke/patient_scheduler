@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "mongoose": "^4.2.2",
+    "mongoose-validator": "^1.2.4",
+    "path": "^0.12.7"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "patient_scheduler",
+  "version": "1.0.0",
+  "description": "An online patient scheduling app",
+  "main": "server.js",
+  "devDependencies": {},
+  "author": "krgroenke@gmail.com",
+  "license": "ISC"
+}

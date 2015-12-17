@@ -1,0 +1,60 @@
+<html>
+<head>
+  <link rel="stylesheet" href="../stylesheet/new_appointment_style.css" type="text/css">
+</head>
+<body>
+
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+
+        <ul >
+          <li><a ng-click="logout()">Logout</a></li>
+          <li><a ng-click="back()">All Appointments</a></li>
+          <li class="active"><a>Schedule an Appointment</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <form class="col s12">
+    <p><span ng-bind="mongoose_errors"></span></p>
+    <div ng-if="errors_array.length > 0">
+      <ul ng-repeat="err in errors_array">
+        <li><span ng-bind="err"></span></li>
+      </ul>
+    </div>
+    <div class="row">
+      <label for="appointment_date">Date</label>
+      <input type="date" class="datepicker" id="appointment_date" ng-model="appointment.date"><br>
+    </div>
+    <div class="row">
+      <label>Select Time</label>
+      <select class="browser-default" ng-model="appointment.time">
+        <option value="" disabled selected>Choose your option</option>
+        <option value="8:00 am">8:00 am</option>
+        <option value="9:00 am">9:00 am</option>
+        <option value="10:00 am">10:00 am</option>
+        <option value="11:00 am">11:00 am</option>
+        <option value="12:00 pm">12:00 pm</option>
+        <option value="1:00 pm">1:00 pm</option>
+        <option value="2:00 pm">2:00 pm</option>
+        <option value="3:00 pm">3:00 pm</option>
+        <option value="4:00 pm">4:00 pm</option>
+        <option value="5:00 pm">5:00 pm</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="textarea1" class="materialize-textarea" ng-model="appointment.complaint"></textarea>
+        <label for="textarea1">Reason for Appointment</label>
+      </div>
+    </div>
+    <div class="row">
+      <a class="waves-effect waves-light btn" ng-click="newAppointment(user)">Submit</a>
+    </div>
+  </form>
+  <div id="new_appointment_info">
+      <h5 class="wordwrap">Schedule a new appointment for <span ng-bind="user"></span> by completing the form</h5>
+  </div>
+</body>
+</html>

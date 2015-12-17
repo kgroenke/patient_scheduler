@@ -1,0 +1,53 @@
+<html>
+<head>
+  <link rel="stylesheet" href="../stylesheet/all_appointments_style.css" type="text/css">
+</head>
+<body>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+
+        <ul >
+          <li><a ng-click="logout()">Logout</a></li>
+          <li class="active"><a>All Appointments</a></li>
+          <li><a ng-click="makeAppointment()">Schedule an Appointment</a></li>
+        </ul>
+        <!-- <a href="#!" class="brand-logo">Logo</a> -->
+      </div>
+    </nav>
+  </div>
+  <div id="banner">
+    <h1>Appointments</h1>
+  </div>
+  <div id="search_bar">
+    <form>
+      <div class="input-field">
+        <input id="search" class='form-control' ng-model="filter_name" placeholder='search appointments by name or reason for appointment' type="search" required>
+        <label for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  </div>
+  <table class="striped">
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Patient Name</th>
+      <th>Reason for Appointment</th>
+      <th> </th>
+    </tr>
+    <tr ng-repeat="appointment in appointments | filter:filter_name | orderBy: '-appointment.created'">
+      <td><span ng-bind="appointment.date | date: 'MMMM d yyyy'"></span></td>
+      <td><span ng-bind="appointment.time"></span></td>
+      <td><span ng-bind="appointment.name"></span></td>
+      <td><span ng-bind="appointment.complaint"></span></td>
+      <td>
+        <a ng-if="appointment.name == user" ng-click="cancelAppointment(appointment._id)" class="waves-effect waves-light btn">Cancel Appointment</a>
+
+
+        <!-- <button ng-if="appointment.name == user" ng-click="cancelAppointment(appointment._id)">Cancel Appointment</button> -->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
