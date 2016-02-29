@@ -1,10 +1,18 @@
-body {
+/*body {
     background-image: url("../images/computer.jpg");
     background-color: #404040;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
     padding: 20px;
+}*/
+
+html {
+  background: url("../images/computer.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 a {
@@ -13,13 +21,17 @@ a {
 }
 
 #login {
-  vertical-align: middle;
+  /*vertical-align: middle;*/
+  height: 345px;
   width: 400px;
   background-color: #a7ffeb;
   padding: 40px 20px;
   float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  margin: 8px;
+  /*margin-right: 20px;
+  margin-bottom: 20px;*/
+  /*margin: auto;*/
+  display: inline-block;
 }
 
 .button {
@@ -27,6 +39,15 @@ a {
   width: 245px;
   margin-top: 60px;
 
+}
+
+#about_app {
+  opacity: .75;
+  width: 400px;
+  display: inline-block;
+  /*width: 500px;*/
+  /*margin: auto;*/
+  /*float: right;*/
 }
 
 #about {
@@ -42,4 +63,16 @@ a {
 ui-view {
   width: 100%;
   height: 100%;
+}
+
+.icon_list {
+  display: inline;
+  vertical-align: 50%;
+}
+
+#content {
+  margin: auto;
+  border-style: solid;
+  color: purple;
+  width: 838px;
 }
