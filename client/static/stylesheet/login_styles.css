@@ -62,6 +62,6 @@ ui-view {
 }
 
 #content {
-  color: purple;
+  margin: auto;
   width: 838px;
 }
