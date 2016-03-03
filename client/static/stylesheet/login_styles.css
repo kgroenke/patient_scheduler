@@ -64,4 +64,10 @@ ui-view {
 #content {
   margin: auto;
   width: 838px;
+  height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -200px;
+  margin-left: -419px;
 }
